@@ -25,6 +25,7 @@ public class HomeViewController: BaseViewController {
     var delegate: HomeViewControllerDelegate?
     
     var defaultCellId: String = "DefaultCellId"
+    var collectionCellId: String = "CollectionCellId"
     var timerToSearch: Timer?
 
     public override func loadView() {
@@ -37,15 +38,25 @@ public class HomeViewController: BaseViewController {
         newsHeaderView.translatesAutoresizingMaskIntoConstraints = false
         newsHeaderView.setStyle(title: "News", color: UIColor.Theme.textColor0)
         
-        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+        let screemSize = UIScreen.main.bounds.size
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize =  CGSize(width: screemSize.width / 2, height: 120)
+        flowLayout.scrollDirection = .horizontal
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         collectionView.backgroundColor = UIColor.Theme.fieldBackground
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(HilightCollectionCell.self, forCellWithReuseIdentifier: collectionCellId)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.isPagingEnabled = true
         
         tableView = UITableView()
         tableView.backgroundColor = UIColor.clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: defaultCellId)
+        tableView.separatorStyle = .singleLine
+        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: defaultCellId)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -67,6 +78,7 @@ public class HomeViewController: BaseViewController {
             self.viewModel.news = nResponse.data
             self.viewModel.maxPage = nResponse.pagination?.total_pages
             self.tableView.reloadData()
+            self.collectionView.reloadData()
             self.showLoading(false)
         }.catch { error in
             self.showLoading(false)
@@ -78,7 +90,6 @@ public class HomeViewController: BaseViewController {
     }
     
     func getMoreNews() {
-        debugPrint("carregando news da pagina:", viewModel.pageIndex)
         self.viewModel.getNews().then(on: .main) { response in
             self.viewModel.news.append(contentsOf: response.data)
             self.tableView.reloadData()
@@ -125,6 +136,40 @@ public class HomeViewController: BaseViewController {
     }
 }
 
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionCellId, for: indexPath) as? HilightCollectionCell {
+            let item = self.viewModel.hNews[indexPath.row]
+            cell.titleLabel.setStyle(FontStyle.f12PrimaryRegular, text: item.title, color: UIColor.Theme.textColor2, enabledUppercase: false, numeberOfLines: 0, name: "")
+            
+            if let imgUrl = URL(string: item.image_url) {
+                cell.imgView.load(url: imgUrl)
+            }
+            
+            cell.selectedAction = {
+                if let url = URL(string: item.url) {
+                    self.delegate?.navigateToDetail(url: url)
+                }
+            }
+
+            return cell
+        }
+        return collectionView.dequeueReusableCell(withReuseIdentifier: collectionCellId, for: indexPath)
+    }
+    
+    
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.viewModel.hNews.count
+    }
+    
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
+}
+
+
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -135,32 +180,29 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: defaultCellId, for: indexPath)
-        let item = self.viewModel.news[indexPath.section]
-        cell.backgroundColor = UIColor.random()
-        
-        if let imgUrl = URL(string: item.image_url) {
-            cell.imageView?.load(url: imgUrl)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: defaultCellId, for: indexPath) as? HomeTableViewCell {
+            let item = self.viewModel.news[indexPath.section]
+            
+            cell.titleLabel.setStyle(FontStyle.f12PrimaryRegular, text: item.title, color: UIColor.Theme.textColor0, enabledUppercase: false, numeberOfLines: 0, name: "")
+            
+            cell.descriptionLabel.setStyle(FontStyle.f12PrimaryRegular, text: item.description, color: UIColor.Theme.textColor0, enabledUppercase: false, numeberOfLines: 0, name: "")
+            
+            if let imgUrl = URL(string: item.image_url) {
+                cell.imgView.load(url: imgUrl)
+            }
+
+            cell.selectedAction = {
+                if let url = URL(string: item.url) {
+                    self.delegate?.navigateToDetail(url: url)
+                }
+            }
+            return cell
         }
-        
-        cell.textLabel?.text = item.description
-        cell.textLabel?.font = FontStyle.f14PrimaryRegular.font
-        cell.textLabel?.textColor = UIColor.Theme.textColor1
-        cell.textLabel?.textAlignment = .left
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
+        return tableView.dequeueReusableCell(withIdentifier: defaultCellId, for: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 120
-    }
-    
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = self.viewModel.news[indexPath.section]
-        if let url = URL(string: item.url) {
-            self.delegate?.navigateToDetail(url: url)
-        }
-        
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

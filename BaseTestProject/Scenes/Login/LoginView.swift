@@ -54,7 +54,6 @@ class LoginView: BaseView {
         passwordField.setTextFieldTag(with: 2)
         
         actionButton.configureButton(title: "ENTRAR", titleColor: UIColor.Theme.textColor2)
-        actionButton.isEnabled = true
         actionButton.addTarget(self, action: #selector(buttonClick), for: .touchUpInside)
         buildViewHierarchy()
         setupConstraints()

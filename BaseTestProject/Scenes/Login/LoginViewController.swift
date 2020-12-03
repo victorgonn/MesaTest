@@ -35,6 +35,14 @@ public class LoginViewController: BaseScrollViewController {
         NSLayoutConstraint.activate([
             self.contentViewHeight
         ])
+        
+        NotificationCenter.default.addObserver(forName: .AccessTokenDidChange, object: nil, queue: OperationQueue.main) { (notification) in
+            // Print out access token
+            print("FB Access Token: \(String(describing: AccessToken.current?.tokenString))")
+            if let accessToken = AccessToken.current?.tokenString {
+                UserDefaultsUtils.saveAccessToken(value: accessToken)
+            }
+        }
     }
     
     public override func viewDidLoad() {
@@ -51,8 +59,9 @@ public class LoginViewController: BaseScrollViewController {
             self.resetTextFields()
             self.view.endEditing(true)
             self.showLoading(true)
-            self.viewModel.doLogin().then(on: .main) { _ in
+            self.viewModel.doLogin().then(on: .main) { response in
                 self.showLoading(false)
+                UserDefaultsUtils.saveAccessToken(value: response.token)
                 self.delegate?.navigateToHome()
             }.catch(on: .main) { error in
                 self.showLoading(false)

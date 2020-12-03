@@ -74,6 +74,7 @@
 		85C4BD97257850DA00E366B2 /* MesaDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 85C4BD95257850DA00E366B2 /* MesaDataModel.xcdatamodeld */; };
 		85C4BD9D2578511E00E366B2 /* FavoritNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C4BD9C2578511E00E366B2 /* FavoritNews.swift */; };
 		85C4BDC82578623500E366B2 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C4BDC72578623500E366B2 /* HeaderView.swift */; };
+		85C4BDD325792DF500E366B2 /* HilightCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C4BDD225792DF500E366B2 /* HilightCollectionCell.swift */; };
 		B48A7B4930829F7E08F8C52A /* Pods_BaseTestProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF6EA216F58777DDCA8DDD04 /* Pods_BaseTestProject.framework */; };
 		C2BB90E0A2E170FE6984CB5C /* Pods_BaseTestProjectTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2BD4FC117DE0918E96834 /* Pods_BaseTestProjectTests.framework */; };
 /* End PBXBuildFile section */
@@ -166,6 +167,7 @@
 		85C4BD96257850DA00E366B2 /* MesaDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MesaDataModel.xcdatamodel; sourceTree = "<group>"; };
 		85C4BD9C2578511E00E366B2 /* FavoritNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritNews.swift; sourceTree = "<group>"; };
 		85C4BDC72578623500E366B2 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		85C4BDD225792DF500E366B2 /* HilightCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HilightCollectionCell.swift; sourceTree = "<group>"; };
 		9C411C97F10E00058812B6B2 /* Pods-BaseTestProject-BaseTestProjectUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseTestProject-BaseTestProjectUITests.release.xcconfig"; path = "Target Support Files/Pods-BaseTestProject-BaseTestProjectUITests/Pods-BaseTestProject-BaseTestProjectUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9F05D3CBEBBA757E1E9CA2AC /* Pods-BaseTestProjectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseTestProjectTests.debug.xcconfig"; path = "Target Support Files/Pods-BaseTestProjectTests/Pods-BaseTestProjectTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CAFA344073066D0692F4B0B4 /* Pods-BaseTestProject-BaseTestProjectUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseTestProject-BaseTestProjectUITests.debug.xcconfig"; path = "Target Support Files/Pods-BaseTestProject-BaseTestProjectUITests/Pods-BaseTestProject-BaseTestProjectUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				85A418582574D25E00CB8506 /* HomeCoordinator.swift */,
 				85A4187125753BE000CB8506 /* HomeViewCells.swift */,
 				85C4BDC72578623500E366B2 /* HeaderView.swift */,
+				85C4BDD225792DF500E366B2 /* HilightCollectionCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -784,6 +787,7 @@
 				8531D36D25708ADE0057DC6C /* LoginViewModel.swift in Sources */,
 				85C4BD6C25775A0800E366B2 /* SingUpViewController.swift in Sources */,
 				85A4188A257569D400CB8506 /* DetailCoordinator.swift in Sources */,
+				85C4BDD325792DF500E366B2 /* HilightCollectionCell.swift in Sources */,
 				85A417C72574260200CB8506 /* UIViewExtension.swift in Sources */,
 				85A417BC25735B4700CB8506 /* BaseView.swift in Sources */,
 				85C4BD8025775E3000E366B2 /* UIImageView.swift in Sources */,

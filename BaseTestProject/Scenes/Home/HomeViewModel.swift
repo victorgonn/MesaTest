@@ -21,6 +21,7 @@ class HomeViewModel {
     
     func getNews() -> Promise<NewsResponse> {
         pageIndex += 1
+        debugPrint("carregando news da pagina:", pageIndex)
         let request = NewsRequest(current_page: pageIndex, per_page: size, published_at: "")
         return ServiceApiClient.getNews(request: request)
     }
